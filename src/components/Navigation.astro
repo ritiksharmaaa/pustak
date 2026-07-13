@@ -1,0 +1,17 @@
+---
+const navigationItems = [
+	{ href: '/', label: 'Home' },
+	{ href: '/about/', label: 'About' },
+	{ href: '/blog/', label: 'Blog' },
+];
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+---
+
+<nav class="nav" aria-label="Primary">
+	{navigationItems.map((item) => (
+		<a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+			{item.label}
+		</a>
+	))}
+</nav>

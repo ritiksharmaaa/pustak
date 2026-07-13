@@ -14,6 +14,7 @@ const happy = true;
 const finished = false;
 const goal = 3;
 
+import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
 
 ---
@@ -28,11 +29,7 @@ import "../styles/global.css";
   </head>
   <body>
     <main class="shell">
-      <nav class="nav" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="/about/">About</a>
-        <a href="/blog/">Blog</a>
-      </nav>
+    <Navigation currentPath={Astro.url.pathname} />
 
       <section class="hero">
         <p class="eyebrow">{pageTitle}</p>
