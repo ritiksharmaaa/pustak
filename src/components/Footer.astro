@@ -1,0 +1,18 @@
+---
+const socialLinks = [
+	{ href: 'https://github.com/ritiksharmaaa', label: 'GitHub' }, 
+    { href: 'https://www.linkedin.com/in/ritiksharmaaa/', label: 'LinkedIn' }, 
+    { href: 'https://twitter.com/ritiksharmaaa', label: 'Twitter' } 
+];
+---
+
+<footer class="footer" aria-label="Site footer">
+	<p class="footer__text">Built with Astro for keeping reading notes in one place.</p>
+	<div class="footer__links" aria-label="Social links">
+		{socialLinks.map((link) => (
+			<a href={link.href} target="_blank" rel="noreferrer">
+				{link.label}
+			</a>
+		))}
+	</div>
+</footer>

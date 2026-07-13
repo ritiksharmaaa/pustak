@@ -6,7 +6,8 @@ const entries = [
 ];
 const pageTitle = "Pustak Blog";
 
-import Navigation from "../components/Navigation.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 ---
 
@@ -21,7 +22,7 @@ import "../styles/global.css";
   </head>
   <body>
     <main class="shell">
-    <Navigation currentPath={Astro.url.pathname} />
+    <Header currentPath={Astro.url.pathname} />
 
       <section class="hero">
         <p class="eyebrow">{pageTitle}</p>
@@ -44,6 +45,8 @@ import "../styles/global.css";
           </article>
         ))}
       </section>
+
+      <Footer />
     </main>
   </body>
 </html>

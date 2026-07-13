@@ -14,7 +14,8 @@ const happy = true;
 const finished = false;
 const goal = 3;
 
-import Navigation from "../components/Navigation.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
 ---
@@ -29,7 +30,7 @@ import "../styles/global.css";
   </head>
   <body>
     <main class="shell">
-    <Navigation currentPath={Astro.url.pathname} />
+    <Header currentPath={Astro.url.pathname} />
 
       <section class="hero">
         <p class="eyebrow">{pageTitle}</p>
@@ -62,6 +63,8 @@ import "../styles/global.css";
             : `The current setup is still in progress, with ${goal} small goals left to complete.`}
         </p>
       </section>
+
+      <Footer />
     </main>
   </body>
 </html>

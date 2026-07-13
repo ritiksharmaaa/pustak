@@ -1,0 +1,14 @@
+---
+import Navigation from "./Navigation.astro";
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+---
+
+<header class="header">
+	<div class="header__brand">
+		<p class="header__eyebrow">Pustak</p>
+		<p class="header__title">A reading space for books and notes</p>
+	</div>
+
+	<Navigation currentPath={currentPath} />
+</header>
