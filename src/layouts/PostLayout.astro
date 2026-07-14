@@ -2,13 +2,19 @@
 import BaseLayout from './BaseLayout.astro';
 
 const { frontmatter } = Astro.props;
-const { title, description, pubDate, image, author, tags = [] } = frontmatter;
+const { title, description, pubDate, date, image, author, tags = [] } = frontmatter;
 
-const formattedDate = new Date(pubDate).toLocaleDateString('en', {
-	year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-});
+const postTags: string[] = tags;
+
+const publishedOn = pubDate ?? date;
+
+const formattedDate = publishedOn
+	? new Date(publishedOn).toLocaleDateString('en', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	})
+	: '';
 ---
 
 <BaseLayout title={`${title} | Pustak`} description={description} currentPath="/blog/">
@@ -18,7 +24,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en', {
 			<h1>{title}</h1>
 			<p class="post__meta">
 				{author && <span>{author}</span>}
-				<span>{formattedDate}</span>
+				{formattedDate && <span>{formattedDate}</span>}
 			</p>
 			{description && <p class="lead">{description}</p>}
 		</header>
@@ -31,7 +37,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en', {
 
 		{tags.length > 0 && (
 			<ul class="post__tags" aria-label="Post tags">
-				{tags.map((tag) => <li>{tag} added </li>)}
+				{postTags.map((tag: string) => <li>{tag}</li>)}
 			</ul>
 		)}
 

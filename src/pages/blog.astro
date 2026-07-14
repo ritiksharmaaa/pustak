@@ -1,12 +1,29 @@
 ---
-const entries = [
-	{ title: 'Morning reading', text: 'A short note on the article or chapter you started with today.' },
-	{ title: 'Midday ideas', text: 'A place for quotes, links, and anything worth remembering.' },
-	{ title: 'Evening recap', text: 'Wrap up the day with what you read and what you want to return to.' },
-];
-const pageTitle = "Pustak Blog";
-
+import BlogCard from '../components/BlogCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+type PostModule = {
+  frontmatter: {
+    title: string;
+    description?: string;
+    author?: string;
+    pubDate?: string;
+    date?: string;
+    tags?: string[];
+  };
+  url: string;
+};
+
+const posts = Object.values(import.meta.glob('./posts/*.md', { eager: true })) as PostModule[];
+
+posts.sort((left: PostModule, right: PostModule) => {
+  const leftPublished = left.frontmatter.pubDate ?? left.frontmatter.date ?? '';
+  const rightPublished = right.frontmatter.pubDate ?? right.frontmatter.date ?? '';
+
+  return new Date(rightPublished).getTime() - new Date(leftPublished).getTime();
+});
+
+const pageTitle = "Pustak Blog";
 ---
 
 <BaseLayout title={pageTitle} description="Quick notes from the things you read during the day." currentPath={Astro.url.pathname}>
@@ -16,21 +33,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <p class="lead">Use this page for articles, essays, and small reflections you want to keep in one place.</p>
   </section>
 
-  <section class="links">
-    <ul>
-      <li><a href="/posts/post-1/">Post 1</a></li>
-      <li><a href="/posts/post-2/">Post 2</a></li>
-      <li><a href="/posts/post-3/">Post 3</a></li>
-      <li><a href="/posts/post-4/">Post 4</a></li>
-    </ul>
-  </section>
-
-  <section class="grid" aria-label="Daily reading notes">
-    {entries.map((entry) => (
-      <article class="card">
-        <h2>{entry.title}</h2>
-        <p>{entry.text}</p>
-      </article>
-    ))}
+  <section class="blog-grid" aria-label="All posts">
+    {posts.map((post) => <BlogCard post={post} />)}
   </section>
 </BaseLayout>

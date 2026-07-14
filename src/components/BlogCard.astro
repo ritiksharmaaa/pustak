@@ -1,0 +1,37 @@
+---
+const { post } = Astro.props;
+
+const publishedOn = post.frontmatter.pubDate ?? post.frontmatter.date;
+
+const formattedDate = publishedOn
+	? new Date(publishedOn).toLocaleDateString('en', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	})
+	: '';
+
+const tags: string[] = post.frontmatter.tags ?? [];
+---
+
+<article class="blog-card">
+	<a class="blog-card__link" href={post.url} aria-label={`Read ${post.frontmatter.title}`}>
+		<div class="blog-card__top">
+			<p class="blog-card__eyebrow">Post</p>
+			<h2>{post.frontmatter.title}</h2>
+		</div>
+
+		{post.frontmatter.description && <p class="blog-card__description">{post.frontmatter.description}</p>}
+
+		<div class="blog-card__meta">
+			{formattedDate && <span>{formattedDate}</span>}
+			{post.frontmatter.author && <span>{post.frontmatter.author}</span>}
+		</div>
+
+		{tags.length > 0 && (
+			<ul class="blog-card__tags" aria-label="Post tags">
+				{tags.map((tag) => <li>{tag}</li>)}
+			</ul>
+		)}
+	</a>
+</article>
