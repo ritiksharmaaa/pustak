@@ -6,6 +6,28 @@ const { title, description, pubDate, date, image, author, tags = [] } = frontmat
 
 const postTags: string[] = tags;
 
+type RelatedPost = {
+	frontmatter: {
+		title: string;
+		description?: string;
+		pubDate?: string;
+		date?: string;
+	};
+	url: string;
+};
+
+const allPosts = Object.values(import.meta.glob('../pages/posts/*.md', { eager: true })) as RelatedPost[];
+
+const relatedPosts = allPosts
+	.filter((post) => post.url !== Astro.url.pathname)
+	.sort((left, right) => {
+		const leftPublished = left.frontmatter.pubDate ?? left.frontmatter.date ?? '';
+		const rightPublished = right.frontmatter.pubDate ?? right.frontmatter.date ?? '';
+
+		return new Date(rightPublished).getTime() - new Date(leftPublished).getTime();
+	})
+	.slice(0, 4);
+
 const publishedOn = pubDate ?? date;
 
 const formattedDate = publishedOn
@@ -18,31 +40,46 @@ const formattedDate = publishedOn
 ---
 
 <BaseLayout title={`${title} | Pustak`} description={description} currentPath="/blog/">
-	<article class="post">
-		<header class="post__header">
-			<p class="eyebrow">Post</p>
-			<h1>{title}</h1>
-			<p class="post__meta">
-				{author && <span>{author}</span>}
-				{formattedDate && <span>{formattedDate}</span>}
-			</p>
-			{description && <p class="lead">{description}</p>}
-		</header>
+	<div class="post__shell">
+		<article class="post">
+			<header class="post__header">
+				<p class="eyebrow">Post</p>
+				<h1>{title}</h1>
+				<p class="post__meta">
+					{author && <span>{author}</span>}
+					{formattedDate && <span>{formattedDate}</span>}
+				</p>
+				{description && <p class="lead">{description}</p>}
+			</header>
 
-		{image && (
-			<figure class="post__figure">
-				<img class="post__image" src={image.url} alt={image.alt} />
-			</figure>
-		)}
+			{image && (
+				<figure class="post__figure">
+					<img class="post__image" src={image.url} alt={image.alt} />
+				</figure>
+			)}
 
-		{tags.length > 0 && (
-			<ul class="post__tags" aria-label="Post tags">
-				{postTags.map((tag: string) => <li>{tag}</li>)}
-			</ul>
-		)}
+			{tags.length > 0 && (
+				<ul class="post__tags" aria-label="Post tags">
+					{postTags.map((tag: string) => <li>{tag}</li>)}
+				</ul>
+			)}
 
-		<div class="post__content">
-			<slot />
-		</div>
-	</article>
+			<div class="post__content">
+				<slot />
+			</div>
+		</article>
+
+		<aside class="post__sidebar" aria-label="More posts">
+			<p class="post__sidebar-eyebrow">More from the blog</p>
+			<h2>Other posts to read</h2>
+			<div class="post__sidebar-list">
+				{relatedPosts.map((post) => (
+					<a class="post__sidebar-item" href={post.url}>
+						<h3>{post.frontmatter.title}</h3>
+						{post.frontmatter.description && <p>{post.frontmatter.description}</p>}
+					</a>
+				))}
+			</div>
+		</aside>
+	</div>
 </BaseLayout>
