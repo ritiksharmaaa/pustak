@@ -6,47 +6,31 @@ const entries = [
 ];
 const pageTitle = "Pustak Blog";
 
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import "../styles/global.css";
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <main class="shell">
-    <Header currentPath={Astro.url.pathname} />
+<BaseLayout title={pageTitle} description="Quick notes from the things you read during the day." currentPath={Astro.url.pathname}>
+  <section class="hero">
+    <p class="eyebrow">{pageTitle}</p>
+    <h1>Quick notes from the things you read during the day.</h1>
+    <p class="lead">Use this page for articles, essays, and small reflections you want to keep in one place.</p>
+  </section>
 
-      <section class="hero">
-        <p class="eyebrow">{pageTitle}</p>
-        <h1>Quick notes from the things you read during the day.</h1>
-        <p class="lead">Use this page for articles, essays, and small reflections you want to keep in one place.</p>
-      </section>
-      <section class="links">
-      <ul>
+  <section class="links">
+    <ul>
       <li><a href="/posts/post-1/">Post 1</a></li>
       <li><a href="/posts/post-2/">Post 2</a></li>
       <li><a href="/posts/post-3/">Post 3</a></li>
       <li><a href="/posts/post-4/">Post 4</a></li>
-    </ul></section>
+    </ul>
+  </section>
 
-      <section class="grid" aria-label="Daily reading notes">
-        {entries.map((entry) => (
-          <article class="card">
-            <h2>{entry.title}</h2>
-            <p>{entry.text}</p>
-          </article>
-        ))}
-      </section>
-
-      <Footer />
-    </main>
-  </body>
-</html>
+  <section class="grid" aria-label="Daily reading notes">
+    {entries.map((entry) => (
+      <article class="card">
+        <h2>{entry.title}</h2>
+        <p>{entry.text}</p>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

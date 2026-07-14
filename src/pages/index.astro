@@ -13,40 +13,22 @@ const readingLists = [
 		description: 'Finished books, quick thoughts, and favorite lines.',
 	},
 ];
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import "../styles/global.css";
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Pustak</title>
-	</head>
-	<body>
-		<main class="shell">
-			<Header currentPath={Astro.url.pathname} />
+<BaseLayout title="Pustak" description="A simple place to keep the books you love and the ones you want next." currentPath={Astro.url.pathname}>
+	<section class="hero">
+		<p class="eyebrow">Pustak</p>
+		<h1>A simple place to keep the books you love and the ones you want next.</h1>
+		<p class="lead">Track what you have read, what you are reading, and the articles you collect through the day.</p>
+	</section>
 
-			<section class="hero">
-				<p class="eyebrow">Pustak</p>
-				<h1>A simple place to keep the books you love and the ones you want next.</h1>
-				<p class="lead">Track what you have read, what you are reading, and the articles you collect through the day.</p>
-			</section>
-
-			<section class="grid" aria-label="Reading lists">
-				{readingLists.map((item) => (
-					<article class="card">
-						<h2>{item.title}</h2>
-						<p>{item.description}</p>
-					</article>
-				))}
-			</section>
-
-			<Footer />
-		</main>
-	</body>
-</html>
+	<section class="grid" aria-label="Reading lists">
+		{readingLists.map((item) => (
+			<article class="card">
+				<h2>{item.title}</h2>
+				<p>{item.description}</p>
+			</article>
+		))}
+	</section>
+</BaseLayout>

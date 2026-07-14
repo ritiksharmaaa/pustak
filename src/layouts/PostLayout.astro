@@ -1,0 +1,42 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+const { title, description, pubDate, image, author, tags = [] } = frontmatter;
+
+const formattedDate = new Date(pubDate).toLocaleDateString('en', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} | Pustak`} description={description} currentPath="/blog/">
+	<article class="post">
+		<header class="post__header">
+			<p class="eyebrow">Post</p>
+			<h1>{title}</h1>
+			<p class="post__meta">
+				{author && <span>{author}</span>}
+				<span>{formattedDate}</span>
+			</p>
+			{description && <p class="lead">{description}</p>}
+		</header>
+
+		{image && (
+			<figure class="post__figure">
+				<img class="post__image" src={image.url} alt={image.alt} />
+			</figure>
+		)}
+
+		{tags.length > 0 && (
+			<ul class="post__tags" aria-label="Post tags">
+				{tags.map((tag) => <li>{tag} added </li>)}
+			</ul>
+		)}
+
+		<div class="post__content">
+			<slot />
+		</div>
+	</article>
+</BaseLayout>

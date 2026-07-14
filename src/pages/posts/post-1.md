@@ -1,6 +1,8 @@
 ---
+# here we can assign the information realted to the  top section of the html title head tag and many custom one also 
 title: "Remarkable Inventions"
 date: 2026-06-28
+layout: ../../layouts/PostLayout.astro
 ---
 
 # Remarkable Inventions

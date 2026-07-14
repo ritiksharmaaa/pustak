@@ -14,57 +14,39 @@ const happy = true;
 const finished = false;
 const goal = 3;
 
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import "../styles/global.css";
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <main class="shell">
-    <Header currentPath={Astro.url.pathname} />
+<BaseLayout title={pageTitle} description={`${identity.firstName} keeps a simple reading log with books, articles, and notes.`} currentPath={Astro.url.pathname}>
+	<section class="hero">
+		<p class="eyebrow">{pageTitle}</p>
+		<h1>{identity.firstName}'s reading life, kept simple.</h1>
+		<p class="lead">{identity.firstName} is a {identity.occupation} in {identity.country}, using Pustak to track books, articles, and the small things worth remembering.</p>
+	</section>
 
-      <section class="hero">
-        <p class="eyebrow">{pageTitle}</p>
-        <h1>{identity.firstName}'s reading life, kept simple.</h1>
-        <p class="lead">{identity.firstName} is a {identity.occupation} in {identity.country}, using Pustak to track books, articles, and the small things worth remembering.</p>
-      </section>
+	<section class="note">
+		<h2>About me</h2>
+		<p>I like {identity.hobbies.join(', ')} and I keep this space focused on the books I love, the books I plan to read, and the articles I come across during the day.</p>
+	</section>
 
-      <section class="note">
-        <h2>About me</h2>
-        <p>I like {identity.hobbies.join(', ')} and I keep this space focused on the books I love, the books I plan to read, and the articles I come across during the day.</p>
-      </section>
+	<section class="note skills">
+		<h2>Skills I work with</h2>
+		<ul>
+			{skills.map((skill) => <li>{skill}</li>)}
+		</ul>
+	</section>
 
-      <section class="note skills">
-        <h2>Skills I work with</h2>
-        <ul>
-          {skills.map((skill) => <li>{skill}</li>)}
-        </ul>
-      </section>
-
-      <section class="note status">
-        <h2>Current use case</h2>
-        <p>
-          {happy
-            ? `This page is set up to feel positive and personal, with a simple reading log you can enjoy using.`
-            : `This page still needs a little tuning to feel right.`}
-        </p>
-        <p>
-          {finished
-            ? `The current setup is finished and ready to use.`
-            : `The current setup is still in progress, with ${goal} small goals left to complete.`}
-        </p>
-      </section>
-
-      <Footer />
-    </main>
-  </body>
-</html>
+	<section class="note status">
+		<h2>Current use case</h2>
+		<p>
+			{happy
+				? `This page is set up to feel positive and personal, with a simple reading log you can enjoy using.`
+				: `This page still needs a little tuning to feel right.`}
+		</p>
+		<p>
+			{finished
+				? `The current setup is finished and ready to use.`
+				: `The current setup is still in progress, with ${goal} small goals left to complete.`}
+		</p>
+	</section>
+</BaseLayout>
