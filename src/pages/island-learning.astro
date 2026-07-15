@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LoadCounter } from '../components/islands/LoadCounter';
+import { IdleTicker } from '../components/islands/IdleTicker';
+import { VisibleMeter } from '../components/islands/VisibleMeter';
+import { MediaReveal } from '../components/islands/MediaReveal';
+import { OnlyIsland } from '../components/islands/OnlyIsland';
+
+const shelfSections = [
+	{
+		title: 'Want to Read',
+		books: ['Atomic Habits', 'Deep Work', 'The Midnight Library'],
+		note: 'Books you want to save for later.',
+	},
+	{
+		title: 'Currently Reading',
+		books: ['The Lean Startup', 'The Psychology of Money'],
+		note: 'Books you are partway through right now.',
+	},
+	{
+		title: 'Favorites',
+		books: ['Sapiens', 'The Alchemist', 'Essentialism'],
+		note: 'Books you would recommend or revisit.',
+	},
+];
+---
+
+<BaseLayout
+	title="Island Learning"
+	description="A guided demo of Astro islands and Preact hydration directives for a book tracker."
+	currentPath={Astro.url.pathname}
+>
+	<section class="page-intro">
+		<p class="eyebrow">Island learning</p>
+		<h1>See how a book tracker stays fast until a shelf needs client-side behavior.</h1>
+		<p class="lead">
+			This page uses a reading-list theme to show how static Astro content and Preact islands work
+			together for your books, favorites, and reading queue.
+		</p>
+	</section>
+
+	<section class="learning-grid" aria-label="Reading shelves">
+		{shelfSections.map((section) => (
+			<article class="learning-card">
+				<p class="learning-card__eyebrow">Shelf</p>
+				<h2 class="learning-card__title">{section.title}</h2>
+				<p class="learning-card__copy">{section.note}</p>
+				<ul class="post__tags" aria-label={`${section.title} books`}>
+					{section.books.map((book) => (
+						<li>{book}</li>
+					))}
+				</ul>
+			</article>
+		))}
+	</section>
+
+	<section class="learning-grid" aria-label="Island overview">
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">Default Astro</p>
+			<h2 class="learning-card__title">Static shelves, no JavaScript</h2>
+			<p class="learning-card__copy">
+				This part of the page is just rendered HTML, perfect for showing book lists, notes, and
+				recommendations without any client code.
+			</p>
+		</article>
+
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">client:load</p>
+			<h2 class="learning-card__title">Instant actions after load</h2>
+			<p class="learning-card__copy">
+				Best for a quick-save button when a user wants to add a book to their reading list right away.
+			</p>
+		</article>
+
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">client:idle</p>
+			<h2 class="learning-card__title">Wait for spare browser time</h2>
+			<p class="learning-card__copy">
+				Useful for a reading timer or progress helper that can wait until the browser is free.
+			</p>
+		</article>
+
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">client:visible</p>
+			<h2 class="learning-card__title">Hydrate only when the shelf is seen</h2>
+			<p class="learning-card__copy">
+				Good for deeper recommendation shelves that should stay light until the reader scrolls down.
+			</p>
+		</article>
+
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">client:media</p>
+			<h2 class="learning-card__title">Match the shelf to screen size</h2>
+			<p class="learning-card__copy">
+				Lets you switch between a compact mobile shelf and a richer desktop reading dashboard.
+			</p>
+		</article>
+
+		<article class="learning-card">
+			<p class="learning-card__eyebrow">client:only</p>
+			<h2 class="learning-card__title">Client-only quick add</h2>
+			<p class="learning-card__copy">
+				Use this when a shelf widget makes sense only as a browser-side interaction.
+			</p>
+		</article>
+	</section>
+
+	<section class="directive-list" aria-label="Interactive directive examples">
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">Static Astro</span>
+				<p class="directive-note">Your reading lists render instantly</p>
+			</div>
+			<div class="island-box">
+				<p class="directive-note" style="margin: 0;">
+					Use plain Astro markup for the shelves that only need to show book titles, categories,
+					and notes.
+				</p>
+			</div>
+		</div>
+
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">client:load</span>
+				<p class="directive-note">Quick-save books as soon as the page loads</p>
+			</div>
+			<LoadCounter client:load />
+		</div>
+
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">client:idle</span>
+				<p class="directive-note">Reading timer starts after the browser calms down</p>
+			</div>
+			<IdleTicker client:idle />
+		</div>
+
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">client:visible</span>
+				<p class="directive-note">Book suggestions appear when you scroll to them</p>
+			</div>
+			<VisibleMeter client:visible />
+		</div>
+
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">client:media</span>
+				<p class="directive-note">Switch between mobile and desktop shelf views</p>
+			</div>
+			<MediaReveal client:media="(min-width: 800px)" />
+		</div>
+
+		<div class="directive-panel">
+			<div class="directive-panel__meta">
+				<span class="directive-chip">client:only</span>
+				<p class="directive-note">Browser-only quick add for a saved book</p>
+			</div>
+			<OnlyIsland client:only="preact" />
+		</div>
+	</section>
+</BaseLayout>
